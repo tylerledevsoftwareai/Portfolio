@@ -10,10 +10,10 @@ const path = require('path');
 
 describe('Live Production API Integration Smoke Tests', () => {
   const SOM_API_URL = process.env.SOM_API_URL || 'https://som-color-extractor.onrender.com/api/v1/palette';
-  const SOM_API_KEY = process.env.SOM_API_KEY || '';
+  const SOM_API_KEY = process.env.SOM_API_KEY || '123';
 
   const WASTE_API_URL = process.env.WASTE_API_URL || 'https://waste-classification-api-3dd9.onrender.com/api/v1/classify';
-  const WASTE_API_KEY = process.env.WASTE_API_KEY || '';
+  const WASTE_API_KEY = process.env.WASTE_API_KEY || '123';
 
   test('Live SOM Color Extractor API endpoint should return valid 3x3 palette', async () => {
     const imagePath = path.join(__dirname, '../assets/images/Avatar.png');

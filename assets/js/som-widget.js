@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const gridSelect = document.getElementById('som-grid-select');
 
   const API_URL = (window.ENV && window.ENV.SOM_API_URL) || 'https://som-color-extractor.onrender.com/api/v1/palette';
-  const API_KEY = (window.ENV && window.ENV.SOM_API_KEY) || '';
+  const API_KEY = (window.ENV && window.ENV.SOM_API_KEY) || '123';
   let currentSomFile = null;
 
   async function extractPalette(blob, dataUrl) {

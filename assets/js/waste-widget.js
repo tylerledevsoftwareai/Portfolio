@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modelSelect = document.getElementById('waste-model-select');
 
   const API_URL = (window.ENV && window.ENV.WASTE_API_URL) || 'https://waste-classification-api-3dd9.onrender.com/api/v1/classify';
-  const API_KEY = (window.ENV && window.ENV.WASTE_API_KEY) || '';
+  const API_KEY = (window.ENV && window.ENV.WASTE_API_KEY) || '123';
   let currentWasteFile = null;
 
   const iconMap = {
