@@ -11,6 +11,45 @@ document.addEventListener('DOMContentLoaded', () => {
   const API_KEY = (window.ENV && window.ENV.SOM_API_KEY) || '';
   let currentSomFile = null;
 
+  function compressImageIfNeeded(file, maxDimension = 800) {
+    return new Promise((resolve) => {
+      if (!file || file.size < 1024 * 1024) {
+        return resolve(file);
+      }
+
+      const img = new Image();
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        img.onload = () => {
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxDimension || height > maxDimension) {
+            if (width > height) {
+              height = Math.round((height * maxDimension) / width);
+              width = maxDimension;
+            } else {
+              width = Math.round((width * maxDimension) / height);
+              height = maxDimension;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob((blob) => {
+            resolve(blob || file);
+          }, 'image/jpeg', 0.85);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   async function extractPalette(blob, dataUrl) {
     if (blob) currentSomFile = { blob, dataUrl };
     const fileToUse = blob || (currentSomFile ? currentSomFile.blob : null);
@@ -31,8 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
     statusBox.innerHTML = `<span><span class="som-loading-spinner"></span> Running SOM Vector Quantization (${gridSize}x${gridSize})...</span>`;
 
     try {
+      const compressedBlob = await compressImageIfNeeded(fileToUse);
       const formData = new FormData();
-      formData.append('image', fileToUse, 'image.png');
+      formData.append('image', compressedBlob, 'image.jpg');
       formData.append('grid_x', gridSize);
       formData.append('grid_y', gridSize);
 

@@ -4,6 +4,14 @@ export const config = {
   },
 };
 
+async function getRawBody(req) {
+  const chunks = [];
+  for await (const chunk of req) {
+    chunks.push(chunk);
+  }
+  return Buffer.concat(chunks);
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -13,13 +21,15 @@ export default async function handler(req, res) {
   const API_KEY = process.env.SOM_API_KEY || 'secret_key_som_9988';
 
   try {
+    const rawBody = await getRawBody(req);
+
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
         'X-API-Key': API_KEY,
         'content-type': req.headers['content-type']
       },
-      body: req
+      body: rawBody
     });
 
     const data = await response.json();

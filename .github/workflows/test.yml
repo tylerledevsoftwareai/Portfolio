@@ -1,4 +1,4 @@
-name: CI - Automated Test Suite
+name: CI/CD - Test & Deploy to Vercel
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: Run Unit Tests & Code Coverage
+    name: 🧪 Run Unit & Integration Test Suite
     runs-on: ubuntu-latest
 
     steps:
@@ -37,3 +37,22 @@ jobs:
           WASTE_API_URL: ${{ secrets.WASTE_API_URL || 'https://waste-classification-api-3dd9.onrender.com/api/v1/classify' }}
           WASTE_API_KEY: ${{ secrets.WASTE_API_KEY}}
         run: npm run test:e2e
+
+  deploy:
+    name: 🚀 Deploy to Vercel (Gated on Passing Tests)
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.VERCEL_TOKEN != ''
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel Action
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./

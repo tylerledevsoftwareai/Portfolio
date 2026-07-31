@@ -24,6 +24,45 @@ document.addEventListener('DOMContentLoaded', () => {
     'IED': '⚠️'
   };
 
+  function compressImageIfNeeded(file, maxDimension = 800) {
+    return new Promise((resolve) => {
+      if (!file || file.size < 1024 * 1024) {
+        return resolve(file);
+      }
+
+      const img = new Image();
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        img.onload = () => {
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxDimension || height > maxDimension) {
+            if (width > height) {
+              height = Math.round((height * maxDimension) / width);
+              width = maxDimension;
+            } else {
+              width = Math.round((width * maxDimension) / height);
+              height = maxDimension;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob((blob) => {
+            resolve(blob || file);
+          }, 'image/jpeg', 0.85);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   async function runInference(blob, dataUrl) {
     if (blob) currentWasteFile = { blob, dataUrl };
     const fileToUse = blob || (currentWasteFile ? currentWasteFile.blob : null);
@@ -41,8 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
     statusBox.innerHTML = `<span><span class="som-loading-spinner"></span> Running CNN Model ('${selectedModel}' checkpoint)...</span>`;
 
     try {
+      const compressedBlob = await compressImageIfNeeded(fileToUse);
       const formData = new FormData();
-      formData.append('image', fileToUse, 'image.jpg');
+      formData.append('image', compressedBlob, 'image.jpg');
       formData.append('model_name', selectedModel);
       formData.append('top_k', '3');
 
