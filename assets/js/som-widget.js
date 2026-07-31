@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusBox = document.getElementById('som-status');
   const gridSelect = document.getElementById('som-grid-select');
 
-  const API_URL = (window.ENV && window.ENV.SOM_API_URL) || 'https://som-color-extractor.onrender.com/api/v1/palette';
-  const API_KEY = (window.ENV && window.ENV.SOM_API_KEY) || '123';
+  const API_URL = (window.ENV && window.ENV.SOM_API_URL) || '/api/palette';
+  const API_KEY = (window.ENV && window.ENV.SOM_API_KEY) || '';
   let currentSomFile = null;
 
   async function extractPalette(blob, dataUrl) {
@@ -36,11 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
       formData.append('grid_x', gridSize);
       formData.append('grid_y', gridSize);
 
+      const headers = {};
+      if (API_KEY) {
+        headers['X-API-Key'] = API_KEY;
+      }
+
       const response = await fetch(API_URL, {
         method: 'POST',
-        headers: {
-          'X-API-Key': API_KEY
-        },
+        headers: headers,
         body: formData
       });
 

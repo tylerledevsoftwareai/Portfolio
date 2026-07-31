@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusBox = document.getElementById('waste-status');
   const modelSelect = document.getElementById('waste-model-select');
 
-  const API_URL = (window.ENV && window.ENV.WASTE_API_URL) || 'https://waste-classification-api-3dd9.onrender.com/api/v1/classify';
-  const API_KEY = (window.ENV && window.ENV.WASTE_API_KEY) || '123';
+  const API_URL = (window.ENV && window.ENV.WASTE_API_URL) || '/api/classify';
+  const API_KEY = (window.ENV && window.ENV.WASTE_API_KEY) || '';
   let currentWasteFile = null;
 
   const iconMap = {
@@ -46,11 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
       formData.append('model_name', selectedModel);
       formData.append('top_k', '3');
 
+      const headers = {};
+      if (API_KEY) {
+        headers['X-API-Key'] = API_KEY;
+      }
+
       const response = await fetch(API_URL, {
         method: 'POST',
-        headers: {
-          'X-API-Key': API_KEY
-        },
+        headers: headers,
         body: formData
       });
 
