@@ -29,3 +29,11 @@ jobs:
 
       - name: Run Code Coverage Report
         run: npm run test:coverage
+
+      - name: Run Live Production API Integration Tests
+        env:
+          SOM_API_URL: ${{ secrets.SOM_API_URL || 'https://som-color-extractor.onrender.com/api/v1/palette' }}
+          SOM_API_KEY: ${{ secrets.SOM_API_KEY}}
+          WASTE_API_URL: ${{ secrets.WASTE_API_URL || 'https://waste-classification-api-3dd9.onrender.com/api/v1/classify' }}
+          WASTE_API_KEY: ${{ secrets.WASTE_API_KEY}}
+        run: npm run test:e2e
