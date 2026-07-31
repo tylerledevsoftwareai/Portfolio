@@ -2097,3 +2097,20 @@
         grid-template-columns: 1fr;
       }
     }
+
+.waste-note,
+.som-note {
+  margin-top: 14px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  line-height: 1.4;
+}
+
+.waste-note strong,
+.som-note strong {
+  color: var(--light-on-dark-2);
+}
