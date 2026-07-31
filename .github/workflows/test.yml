@@ -31,25 +31,32 @@ jobs:
         run: npm run test:coverage
 
       - name: Run Live Production API Integration Tests
-        if: ${{ secrets.SOM_API_KEY != '' }}
         env:
           SOM_API_URL: ${{ secrets.SOM_API_URL }}
           SOM_API_KEY: ${{ secrets.SOM_API_KEY }}
           WASTE_API_URL: ${{ secrets.WASTE_API_URL }}
           WASTE_API_KEY: ${{ secrets.WASTE_API_KEY }}
-        run: npm run test:e2e
+        run: |
+          if [ -n "$SOM_API_KEY" ]; then
+            npm run test:e2e
+          else
+            echo "Secrets not configured in GitHub UI yet. Skipping live integration tests."
+          fi
 
   deploy:
     name: 🚀 Deploy to Vercel (Gated on Passing Tests)
     needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.VERCEL_TOKEN != ''
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Deploy to Vercel Action
+        if: env.VERCEL_TOKEN != ''
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
