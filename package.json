@@ -1,0 +1,27 @@
+{
+  "name": "tyler-le-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tyler Le - Personal Software Engineer & AI Developer Portfolio Website",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve -l 3000 .",
+    "start": "npx serve -l 3000 .",
+    "build": "echo 'Static build ready for deployment'",
+    "test": "jest",
+    "test:coverage": "jest --coverage"
+  },
+  "keywords": [
+    "portfolio",
+    "software-engineer",
+    "ai-developer",
+    "full-stack",
+    "melbourne"
+  ],
+  "author": "Tyler Le <tyler.le.dev.software.ai@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1"
+  }
+}

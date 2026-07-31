@@ -1,0 +1,25 @@
+# Environment Variables & Secret Keys
+.env
+.env.local
+.env.*.local
+assets/js/env.js
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Deployment & Build artifacts
+.vercel/
+.netlify/
+dist/
+build/
+coverage/
+
+# Logs
+*.log

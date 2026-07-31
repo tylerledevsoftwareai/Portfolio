@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tylerledevsoftwareai.github.io/sitemap.xml
