@@ -10,7 +10,7 @@
     "build": "echo 'Static build ready for deployment'",
     "test": "jest tests/main.test.js tests/som-widget.test.js tests/waste-widget.test.js",
     "test:coverage": "jest tests/main.test.js tests/som-widget.test.js tests/waste-widget.test.js --coverage",
-    "test:e2e": "jest tests/integration.test.js"
+    "test:e2e": "jest tests/integration.test.js --forceExit"
   },
   "keywords": [
     "portfolio",

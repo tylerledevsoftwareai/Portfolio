@@ -15,6 +15,36 @@ describe('Live Production API Integration Smoke Tests', () => {
   const WASTE_API_URL = process.env.WASTE_API_URL || 'https://waste-classification-api-3dd9.onrender.com/api/v1/classify';
   const WASTE_API_KEY = process.env.WASTE_API_KEY;
 
+  async function warmupEndpoint(endpointUrl, retries = 5, delayMs = 5000) {
+    let origin = endpointUrl;
+    try {
+      origin = new URL(endpointUrl).origin;
+    } catch (e) {
+      // fallback if URL parsing fails
+    }
+    for (let i = 0; i < retries; i++) {
+      try {
+        const res = await fetch(origin, { method: 'GET' });
+        if (res.ok || res.status < 500) {
+          console.log(`[Warmup] Pinged ${origin} successfully (Status: ${res.status})`);
+          return true;
+        }
+      } catch (err) {
+        console.warn(`[Warmup] Attempt ${i + 1}/${retries} failed for ${origin}: ${err.message}`);
+      }
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
+    return false;
+  }
+
+  beforeAll(async () => {
+    console.log('Warming up Render free-tier API services before integration tests...');
+    await Promise.all([
+      warmupEndpoint(SOM_API_URL),
+      warmupEndpoint(WASTE_API_URL)
+    ]);
+  }, 120000);
+
   test('Live SOM Color Extractor API endpoint should return valid 3x3 palette', async () => {
     const imagePath = path.join(__dirname, '../assets/images/Avatar.png');
     const imageBuffer = fs.readFileSync(imagePath);
@@ -39,7 +69,7 @@ describe('Live Production API Integration Smoke Tests', () => {
     expect(data).toHaveProperty('palette');
     expect(Array.isArray(data.palette)).toBe(true);
     expect(data.palette.length).toBe(9);
-  }, 90000);
+  }, 120000);
 
   test('Live AI Waste Classifier API endpoint should categorize image into top-k predictions', async () => {
     const imagePath = path.join(__dirname, '../assets/images/Avatar.png');
@@ -66,5 +96,5 @@ describe('Live Production API Integration Smoke Tests', () => {
     expect(data).toHaveProperty('confidence_percentage');
     expect(data).toHaveProperty('top_k_predictions');
     expect(data.top_k_predictions.length).toBeGreaterThan(0);
-  }, 90000);
+  }, 120000);
 });
