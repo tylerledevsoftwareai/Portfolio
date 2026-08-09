@@ -3,6 +3,9 @@
   "cleanUrls": true,
   "outputDirectory": ".",
   "buildCommand": "npm run build",
+  "git": {
+    "deploymentEnabled": false
+  },
   "routes": [
     {
       "src": "/(.*)",
