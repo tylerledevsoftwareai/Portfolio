@@ -67,19 +67,40 @@
       </div>
     </div>
     <div class="hero-photo fade-up visible">
+      <!-- Hero Top Chatbot Widget -->
+      <div class="hero-chat-widget">
+        <div class="hero-chat-header">
+          <span class="hero-chat-badge">🤖 Ask Tyler AI</span>
+          <select id="hero-mode-select" class="hero-chat-select">
+            <option value="professional" selected>💼 Professional</option>
+            <option value="interview">🎤 Interview Prep</option>
+          </select>
+        </div>
+        <div class="hero-chat-log" id="hero-chat-log">
+          <div class="tylerai-msg ai">
+            Hello! I am Tyler's AI Agent. Ask me anything about his engineering skills, .NET experience, or AI projects!
+          </div>
+        </div>
+        <div class="hero-chat-input-row">
+          <input type="text" id="hero-chat-input" class="hero-chat-input" placeholder="Ask Tyler AI a question..." />
+          <button id="hero-send-btn" class="hero-send-btn">Send &nearr;</button>
+        </div>
+      </div>
+
       <div class="hero-photo-ring">
         <div class="hero-photo-inner">
           <img src="assets/images/Avatar.png" alt="Tyler Le — Software Engineer" />
         </div>
+        <div class="hero-photo-badge">
+          <span class="hero-photo-badge-dot"></span>
+          <span class="hero-photo-badge-text">Open to work</span>
+        </div>
+        <div class="hero-photo-chip">
+          <div class="hero-photo-chip-val">Experienced</div>
+          <div class="hero-photo-chip-key">Software Engineer</div>
+        </div>
       </div>
-      <div class="hero-photo-badge">
-        <span class="hero-photo-badge-dot"></span>
-        <span class="hero-photo-badge-text">Open to work</span>
-      </div>
-      <div class="hero-photo-chip">
-        <div class="hero-photo-chip-val">Experienced</div>
-        <div class="hero-photo-chip-key">Software Engineer</div>
-      </div>
+
     </div>
   </section>
 
@@ -259,7 +280,9 @@
             <span class="skill-tag">Node.js</span>
             <span class="skill-tag">PHP</span>
             <span class="skill-tag">Express.js</span>
-            <span class="skill-tag">SQL / NoSQL Databases</span>
+            <span class="skill-tag">SQL Databases</span>
+            <span class="skill-tag">NoSQL Databases</span>
+            <span class="skill-tag">Vector Databases</span>
             <span class="skill-tag">Python</span>
           </div>
         </div>
@@ -285,10 +308,91 @@
     <h2 class="section-heading fade-up">Things I have <em>built</em><br />that are live in the world.</h2>
     <div class="projects-list">
 
-      <!-- Project 1: AI Waste Classifier -->
+      <!-- Project 1: Tyler AI (Multi-Agent RAG & DeepEval Framework) -->
       <div class="project-item fade-up">
         <div class="project-text">
-          <div class="project-number">01 / 04</div>
+          <div class="project-number">01 / 05</div>
+          <h3 class="project-name">
+            <a href="https://github.com/tylerledevsoftwareai/Rag-system-n8n" target="_blank" rel="noopener">
+              Tyler AI &amp; Multi-Agent RAG &nearr;
+            </a>
+          </h3>
+          <p class="project-desc">A high-performance, production-grade dual-agent Retrieval-Augmented Generation (RAG)
+            system powered by n8n and evaluated by DeepEval evaluation framework. It is to handle all inquiries
+            related to Tyler Le.</p>
+          <div class="project-metrics">
+            <div class="project-metric">
+              <div class="project-metric-val">0.98</div>
+              <div class="project-metric-key">Faithfulness Score</div>
+            </div>
+            <div class="project-metric">
+              <div class="project-metric-val">0.96</div>
+              <div class="project-metric-key">Contextual Recall</div>
+            </div>
+            <div class="project-metric">
+              <div class="project-metric-val">0.81</div>
+              <div class="project-metric-key">Answer Relevancy</div>
+            </div>
+          </div>
+          <div class="project-tech">
+            <span>n8n</span>
+            <span>Google Gemini</span>
+            <span>Qdrant</span>
+            <span>Python</span>
+            <span>DeepEval</span>
+            <span>Docker Compose</span>
+            <span>Webhooks</span>
+            <span>Waterfall Model</span>
+          </div>
+          <div class="project-action-links">
+            <a href="https://github.com/tylerledevsoftwareai/Rag-system-n8n" target="_blank" rel="noopener"
+              class="project-btn-link">
+              <span>View Code on GitHub</span>
+              <span>&nearr;</span>
+            </a>
+          </div>
+        </div>
+        <div class="project-visual tylerai-widget-container" id="tylerai-widget">
+          <div class="tylerai-widget-header">
+            <span class="tylerai-badge">🤖 Live Agentic AI Assistant</span>
+          </div>
+
+          <div class="tylerai-chat-area" id="tylerai-chat-log">
+            <div class="tylerai-msg ai">
+              Hello! I am Tyler AI. Select a workflow mode below and send me a message to start chatting!
+            </div>
+          </div>
+
+          <div class="tylerai-controls">
+            <div class="tylerai-mode-bar">
+              <label for="tylerai-mode-select">Workflow:</label>
+              <select id="tylerai-mode-select" class="tylerai-select">
+                <option value="professional" selected>💼 Professional Assistant Workflow</option>
+                <option value="interview">🎤 Interview Prep Workflow</option>
+              </select>
+            </div>
+            <div class="tylerai-input-row">
+              <input type="text" id="tylerai-chat-input" class="tylerai-input"
+                placeholder="Type a message to Tyler AI..." />
+              <button id="tylerai-send-btn" class="tylerai-send-btn">Send &nearr;</button>
+            </div>
+          </div>
+
+          <div id="tylerai-status" class="tylerai-status">
+            <span>Select a workflow and send a message to trigger live n8n webhook.</span>
+          </div>
+
+          <div class="tylerai-note">
+            <span>💡 <strong>Note:</strong> Responses are powered by live n8n AI agent workflows over webhook endpoints.
+              Response time may vary depending on network latency.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2: AI Waste Classifier -->
+      <div class="project-item reverse fade-up">
+        <div class="project-text">
+          <div class="project-number">02 / 05</div>
           <h3 class="project-name">
             <a href="https://github.com/tylerledevsoftwareai/Waste-Classifier" target="_blank" rel="noopener">
               AI Waste Classifier &nearr;
@@ -390,10 +494,10 @@
         </div>
       </div>
 
-      <!-- Project 2: PTE Master (Jung Talents) -->
-      <div class="project-item reverse fade-up">
+      <!-- Project 3: PTE Master (Jung Talents) -->
+      <div class="project-item fade-up">
         <div class="project-text">
-          <div class="project-number">02 / 04</div>
+          <div class="project-number">03 / 05</div>
           <h3 class="project-name">
             <a href="https://www.masterpte.com.au/" target="_blank" rel="noopener">
               PTE Master &nearr;
@@ -442,10 +546,10 @@
         </a>
       </div>
 
-      <!-- Project 3: SOM Color Palette Service -->
-      <div class="project-item fade-up">
+      <!-- Project 4: SOM Color Palette Service -->
+      <div class="project-item reverse fade-up">
         <div class="project-text">
-          <div class="project-number">03 / 04</div>
+          <div class="project-number">04 / 05</div>
           <h3 class="project-name">
             <a href="https://github.com/tylerledevsoftwareai/SOM-Color-Extractor" target="_blank" rel="noopener">
               SOM Color Palette Service &nearr;
@@ -541,10 +645,10 @@
         </div>
       </div>
 
-      <!-- Project 4: Nhan Van Education -->
-      <div class="project-item reverse fade-up">
+      <!-- Project 5: Nhan Van Education -->
+      <div class="project-item fade-up">
         <div class="project-text">
-          <div class="project-number">04 / 04</div>
+          <div class="project-number">05 / 05</div>
           <h3 class="project-name">
             <a href="https://www.nhanvaneducation.com/" target="_blank" rel="noopener">
               Nhan Van Education &nearr;
@@ -638,6 +742,7 @@
 
   <!-- Modular JavaScript Engine -->
   <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/tylerai-widget.js" defer></script>
   <script src="assets/js/som-widget.js" defer></script>
   <script src="assets/js/waste-widget.js" defer></script>
 </body>

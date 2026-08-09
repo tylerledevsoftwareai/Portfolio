@@ -2,7 +2,7 @@
   "version": 2,
   "cleanUrls": true,
   "outputDirectory": ".",
-  "buildCommand": null,
+  "buildCommand": "npm run build",
   "routes": [
     {
       "src": "/(.*)",

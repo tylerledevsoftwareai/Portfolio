@@ -15,6 +15,8 @@ describe('Live Production API Integration Smoke Tests', () => {
   const WASTE_API_URL = process.env.WASTE_API_URL || 'https://waste-classification-api-3dd9.onrender.com/api/v1/classify';
   const WASTE_API_KEY = process.env.WASTE_API_KEY;
 
+  const TYLERAI_WORKFLOW_URL = process.env.TYLERAI_WORKFLOW_URL || 'https://opacity-referee-thirty.ngrok-free.dev/webhook/109f5b2a-50c4-4e63-b1d8-eeb1472e74c5/chat';
+
   async function warmupEndpoint(endpointUrl, retries = 5, delayMs = 5000) {
     let origin = endpointUrl;
     try {
@@ -79,7 +81,7 @@ describe('Live Production API Integration Smoke Tests', () => {
     const blob = new Blob([imageBuffer], { type: 'image/png' });
     formData.append('image', blob, 'Avatar.png');
     formData.append('model_name', 'best');
-    formData.append('top_k', '3');
+    formData.append('top_k', '10');
 
     const response = await fetch(WASTE_API_URL, {
       method: 'POST',
@@ -97,4 +99,27 @@ describe('Live Production API Integration Smoke Tests', () => {
     expect(data).toHaveProperty('top_k_predictions');
     expect(data.top_k_predictions.length).toBeGreaterThan(0);
   }, 120000);
+
+  test('Live Tyler AI n8n Webhook endpoint should respond to prompt queries', async () => {
+    const payload = {
+      chatInput: 'Tell me about yourself',
+      action: 'sendMessage',
+      sessionId: `ci-eval-session-${Date.now()}`
+    };
+
+    const response = await fetch(TYLERAI_WORKFLOW_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    expect(response.status).toBe(200);
+
+    const data = await response.json();
+    const reply = typeof data === 'string' ? data : (data.output || data.text || data.message || JSON.stringify(data));
+    expect(reply).toBeTruthy();
+  }, 90000);
 });
