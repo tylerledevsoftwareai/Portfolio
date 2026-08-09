@@ -48,6 +48,10 @@ jobs:
     needs: test
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
     steps:
       - name: Checkout Repository
@@ -59,9 +63,9 @@ jobs:
           node-version: '20'
 
       - name: Deploy to Vercel Production
-        if: ${{ secrets.VERCEL_TOKEN != '' }}
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: npx vercel --prod --token=$VERCEL_TOKEN --yes
+        run: |
+          if [ -n "$VERCEL_TOKEN" ]; then
+            npx vercel --prod --token=$VERCEL_TOKEN --yes
+          else
+            echo "VERCEL_TOKEN secret not configured in GitHub UI yet. Skipping production deployment."
+          fi
